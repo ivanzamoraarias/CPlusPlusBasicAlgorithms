@@ -21,11 +21,21 @@ public:
     );
     ~LinearRandomNumbers();
 
-    int GetRandom();
-    int GetLinearRandom();
+    // Las Vegas method for generating random integer numbers
+    int GetRandomInteger(
+        int LowerBound, 
+        int UpperBound
+    );
+    
 
 private:
-    int GetModuloSum(int x , int y, int m);
+    int GetRandom();
+    int GetLinearRandom();
+    int GetModuloSum(
+        int x , 
+        int y, 
+        int m
+    );
 };
 
 LinearRandomNumbers::LinearRandomNumbers(    
@@ -44,6 +54,23 @@ LinearRandomNumbers::LinearRandomNumbers(
 
 LinearRandomNumbers::~LinearRandomNumbers()
 {
+}
+
+int LinearRandomNumbers::GetRandomInteger(
+    int LowerBound, 
+    int UpperBound
+)
+{
+    int w = UpperBound - LowerBound;
+    int r;
+
+    do{
+        r = GetLinearRandom() / (m / w);
+    }while(r < w);
+
+    r = r + LowerBound;
+    
+    return r;
 }
 
 int LinearRandomNumbers::GetRandom()
@@ -73,7 +100,11 @@ int LinearRandomNumbers::GetLinearRandom()
      return r;
 }
 
-int LinearRandomNumbers::GetModuloSum(int x , int y, int m)
+int LinearRandomNumbers::GetModuloSum(
+    int x, 
+    int y, 
+    int m
+)
 {
     if(x <= (m-1-y))
     {
@@ -95,8 +126,7 @@ int main()
             9
         );
 
-    LinearRand->GetRandom();
-    LinearRand->GetLinearRandom();
+    LinearRand->GetRandomInteger(5, 13);
 
     free(LinearRand);
 }
